@@ -10,7 +10,7 @@ type
 		Year: Integer;
 	end;
 
-function ReadGenre(prompt: String): Genre;
+function ReadGenre(prompt: String): String;
 var
 	val: String;
 begin
@@ -26,7 +26,7 @@ begin
         val := 'Blues';
 	until (val = 'Blues') or (val = 'Indie') or ( val = 'Trap') or ( val = 'Beyonce');
 
-	result := Genre;
+	ReadGenre := val
 end;
 
 function ReadRecord(prompt: String): Music;
