@@ -4,40 +4,42 @@ procedure PopulateLine(var PopLine: array of String; var N: Integer);
 var
 	myFile: TextFile;
 	i: Integer;
-	begin
+begin
 	AssignFile(myFile, 'mytestfile2.dat');
 	Reset(myFile);
-		for i:=0 to N do
-		PopLine[i] := ReadLn (myFile, ___FJADKL?!);
-		end;
-	end;
+	ReadLn(myFile, N);
+	
+	for i:=0 to N do
+		ReadLn(myFile, PopLine[i]);
 
-procedure PrintLine(const PrintLine : array of String; var N: Integer);
+	Close(myFile);
+end;
+
+procedure PrintLine(const PrintLine: array of String; var N: Integer);
 var
 	p: Integer;
-	begin
-	WriteLn('The file contained:')
-		for p:=0 to N do
+begin
+	WriteLn('The file contained:');
+	for p:=0 to N do
 		WriteLn(PrintLine[p]);
-		end;
-	end;
+end;
 
 procedure Main();
 var
 	N: Integer;
-	Line: array [0..N] of String;
+	Line: array [0..20] of String;
 	myFile: TextFile;
-	begin
+begin
 	AssignFile(myFile, 'mytestfile2.dat');
-	Reset(myFile)
-	ReadLn(myFile, N)
+	Reset(myFile);
+	ReadLn(myFile, N);
+	Close(myFile);
 	PopulateLine(Line, N);
-	PrintLine(Line, N)
-	WriteLn;
-	WriteLn('Press enter to continue...')
+	PrintLine(Line, N);
+	WriteLn('Press enter to continue...');
 	ReadLn();
-	end;
+end;
 
 begin
-Main();
+	Main();
 end.
