@@ -16,5 +16,6 @@ end;
 begin
    mval := 'wef';
    ret := some_function(mval);
+   { omg omg omg }
    writeln('called some function and got ', ret);
 end.
