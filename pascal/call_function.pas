@@ -5,11 +5,11 @@ var
 
 function some_function(input: String): String;
 var
-	val: String;
+    val: String;
 begin
     val := 'foobar';
     val := val + input;
-	some_function := val;
+    some_function := val;
 end;
 
 
