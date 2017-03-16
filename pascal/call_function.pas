@@ -7,14 +7,14 @@ function some_function(input: String): String;
 var
     val: String;
 begin
-    val := 'foobar';
+    val := 'foo';
     val := val + input;
     some_function := val;
 end;
 
 
 begin
-   mval := 'wef';
+   mval := 'bar';
    ret := some_function(mval);
    { omg omg omg }
    writeln('called some function and got ', ret);
