@@ -56,4 +56,24 @@ begin
 	end;
 end;
 
+//this isn't quite right, but it's what I got for now and I'll work on it later....
+//function read_integer_range (prompt: String; ansLow, ansHigh: integer): boolean
+//var
+//  line: String;
+//begin
+  //  result := false;
+    //line := ReadString(prompt);
+    //while not TryStrToInt(line) do
+	//begin
+      //  result := false;
+      //  WriteLn(line, ' is not an integer.');
+	//end;
+    //repeat
+        //result := true if
+        //(ans =< ansHigh) and (ans => ansLow);
+    //else 
+        //writeLn('This is not within the acceptable range. Please enter your answer again.');
+    //until result = true;
+//end;
+
 end.
