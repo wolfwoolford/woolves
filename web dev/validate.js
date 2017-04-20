@@ -1,5 +1,5 @@
 /* Filename: validate.js
-Target html: register.html, confirm.html
+Target html: register.html
 Purpose: validate registration form
 Author: Tahnee Woolford S101534034
 Date Written: 07/04/2017
@@ -103,6 +103,10 @@ function validate() {
         alert(errMsg);
     }
 
+     if (result) {
+        storeBooking(firstname, lastname, age, species, is1day, is4day, is10day)
+     }
+
     return result;
 }
 
@@ -123,7 +127,7 @@ function checkSpeciesAge(age) {
     switch(species) {
         case "Human":
             if (age > 120) {
-                errMsg = "You cannot be a Human and over 120 \n"
+                errMsg = "You cannot be a Human and over 120 \n";
             }
             break;
         case "Dwarf":
@@ -134,11 +138,8 @@ function checkSpeciesAge(age) {
             break;
         case "Elf":
             break;
-        //default:
-            //errMsg = "We don't allow your kind on our tours. \n";
-    }
-    if (result = true) {
-        storeBooking(firstname, lastname, age, species, is1day, is4day, is10day)
+        default:
+            errMsg = "We don't allow your kind on our tours. \n";
     }
     return errMsg;
 }
@@ -165,9 +166,9 @@ function checkSpeciesBeard(beardLength, age) {
 
 function storeBooking(firstname, lastname, age, species, is1day, is4day, is10day) {
     var trip = "";
-    if (is1day) trip += "1day";
-    if (is4day) trip += "4day";
-    if (is10day) trip += "10day";
+    if (is1day) trip = "1day";
+    if (is4day) trip = "4day";
+    if (is10day) trip = "10day";
     sessionStorage.trip = trip;
     sessionStorage.firstname = firstname;
     sessionStorage.lastname = lastname;
@@ -175,6 +176,38 @@ function storeBooking(firstname, lastname, age, species, is1day, is4day, is10day
     sessionStorage.species = species;
     
     alert ("Trip stored: " + sessionStorage.trip);
+}
+
+function prefill_form() {
+    if(sessionStorage.firstname != undefined) {
+        document.getElementById("firstname").value = sessionStorage.firstname;
+    }
+    if(sessionStorage.lastname != undefined) {
+        document.getElementById("lastname").value = sessionStorage.lastname;
+    }
+    if(sessionStorage.age != undefined) {
+        document.getElementById("age").value = sessionStorage.age;
+    }
+    if(sessionStorage.beard != undefined) {
+        document.getElementById("beard").value = sessionStorage.beard;
+    }
+    if(sessionStorage.partySize != undefined) {
+        document.getElementById("partySize").value = sessionStorage.partySize;
+    }
+    switch(localStorage.species) {
+        case "Human":
+            documet.getElementById("human").checked = true;
+            break;
+        case "Dwarf":
+            documet.getElementById("dwarf").checked = true;
+            break;
+        case "Hobbit":
+            documet.getElementById("hobbit").checked = true;
+            break;
+        case "Elf":
+            documet.getElementById("elf").checked = true;
+            break;
+    }
 }
 
 function init() {
