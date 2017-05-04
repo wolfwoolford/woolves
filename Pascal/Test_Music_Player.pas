@@ -46,12 +46,12 @@ begin
 		end;
 	until ((val = 'Blues') or (val = 'Rock') or (val = 'Indie') or (val = 'Jazz') or (val = 'Acoustic') or (val = 'Other'))
 
-
 //Function to read in the data for an individual album
 function ReadAlbum(): album;
 var
     i, track: Integer;
 begin
+// result.AlbumName := ReadAlbumName(What is the name of the album? );
     result.AlbumName := ReadString('What is the name of this album?');
     result.Genre :=ReadGenre('Please enter which genre is most accurate:');
     track := ReadInteger('Please enter the number of tracks in your record (must be less than 20 soz bro)');

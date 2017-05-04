@@ -22,6 +22,13 @@ function ReadInteger(prompt: String): Integer;
 ///
 function ReadDouble(prompt: String): Double;
 
+///
+/// Displays a promp to the user, and reads in the number (whole)
+/// they reply with. The function ensures that the user's entry
+/// is between a range of two Integers. The Integer is then returned.
+///
+function ReadIntegerRange(prompt: String; min: Integer; max: Integer): Integer;
+
 
 implementation
 uses SysUtils;
@@ -56,24 +63,23 @@ begin
 	end;
 end;
 
-//this isn't quite right, but it's what I got for now and I'll work on it later....
-//function read_integer_range (prompt: String; ansLow, ansHigh: integer): boolean
-//var
-//  line: String;
-//begin
-  //  result := false;
-    //line := ReadString(prompt);
-    //while not TryStrToInt(line) do
-	//begin
-      //  result := false;
-      //  WriteLn(line, ' is not an integer.');
-	//end;
-    //repeat
-        //result := true if
-        //(ans =< ansHigh) and (ans => ansLow);
-    //else 
-        //writeLn('This is not within the acceptable range. Please enter your answer again.');
-    //until result = true;
-//end;
+function ReadIntegerRange(prompt: String; min: Integer; max: Integer): Integer;
+var
+	input: Integer;
+begin
+	input := ReadInteger(prompt);
+	while (input < min) do
+		begin
+			WriteLn(input, ' is less than the accepted minimum. Please enter a number between ', min, ' and ', max, '.');
+			input := ReadInteger(prompt);
+		end;
+	while (input > max) do
+		begin
+			WriteLn(input, ' is greater than the accepted maximum. Please enter a number between ', min, ' and ', max, '.');
+			input := ReadInteger(prompt);
+		end;
+	
+	result := input;
+end;
 
 end.
