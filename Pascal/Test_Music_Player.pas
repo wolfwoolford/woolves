@@ -99,19 +99,19 @@ begin
     end;
 end;
 
-//procedure to select what to play
+//function to select what album to play
 function SelectAlbum(var array: MyLibrary): album;
 var
-    i, AlNum: Integer;
+    i, AlbumNumber: Integer;
 begin
     WriteLn('The following albums are in your library:')
-    for i := Low(MyLibrary) to i := High(MyLibrary) do
+    for i := 0 to i := High(MyLibrary) do
         begin
             WriteLn(i+1, ' ', MyLibrary.album[i].AlbumName, ' - ');
             Write(MyLibrary.album[i].Genre);
-            i := i+1;
+            i += 1;
         end;
-    AlNum := ReadInteger('Which album would you like to play?') - 1;
+    AlbumNumber := ReadInteger('Which album would you like to play?') - 1;
     result := MyLibrary.album[AlNum];
 end;
 
@@ -121,7 +121,7 @@ var
     i : Integer;
 begin
     WriteLn('The following songs are available to play from that album: ');
-    for i := Low(SelectedAlbum.TrackName) to High(SelectedAlbum.TrackName) do
+    for i := 0 to High(SelectedAlbum.TrackName) do
         begin
             WriteLn(i+1, '. ',SelectedAlbum.TrackName[i]);
         end;
