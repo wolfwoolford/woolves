@@ -154,25 +154,26 @@ begin
     WriteLn();
 end;
 
-procedure UpdateLibraryFiles(var myLibrary: myLibrary; var myLibraryFile: TextFile);
+procedure UpdateLibraryFiles(var myLib: myLibrary; var myLibraryFile: TextFile);
 var
     i, n, LibSize: Integer;
 begin
     try
         ReWrite(myLibraryFile);
-        LibSize := Length(myLibrary);
+        LibSize := Length(myLib);
+        WriteLn('libsize is ', libsize);
         WriteLn(myLibraryFile, LibSize);
         
         //populating each album in the file
-        for i := 0 to High(myLibrary) do
+        for i := 0 to High(myLib) do
         begin
-            WriteLn(myLibraryFile, myLibrary[i].AlbumName);
-            WriteLn(myLibraryFile, myLibrary[i].GenreID);
-            WriteLn(myLibraryFile, myLibrary[i].Tracks);
-            for n:= 0 to High(myLibrary[i].Tracks) do                                                          //Unsure if it's best practise to do High(TrackNames) or Tracks-1 (as in an array it starts at 0 not 1)'
+            WriteLn(myLibraryFile, myLib[i].AlbumName);
+            WriteLn(myLibraryFile, myLib[i].GenreID);
+            WriteLn(myLibraryFile, myLib[i].Tracks);
+            for n:= 0 to myLib[i].Tracks do                                                          //Unsure if it's best practise to do High(TrackNames) or Tracks-1 (as in an array it starts at 0 not 1)'
                 begin
-                    WriteLn(myLibraryFile, myLibrary[i].TrackNames[n]);
-                    WriteLn(myLibraryFile, myLibrary[i].TrackPath[n]);
+                    WriteLn(myLibraryFile, myLib[i].TrackNames[n]);
+                    WriteLn(myLibraryFile, myLib[i].TrackPath[n]);
                 end;
         end;
     except 
@@ -301,10 +302,11 @@ begin
                     assignFile(MyLibFile, 'myLibraryFile.txt');
                     Reset(MyLibFile);
                     //Seek('myLibraryFile.txt',0);
-                    while not eof(MyLibFile) do
+                    if (eof(MyLibFile) = false) then
                         begin
                             PrintLibrary(myLib);
-                        end;
+                        end
+                    else
                     WriteLn('Your library is empty...');
                      
                 end;                                            
@@ -312,21 +314,22 @@ begin
                     assignFile(MyLibFile, 'myLibraryFile.txt');
                     Reset(MyLibFile);
                     //Seek('myLibraryFile.txt',0);
-                    while not eof(MyLibFile) do
+                    if (eof(MyLibFile) = false) then
                         begin
                             Close(MyLibFile);
                             MyAlChoice := PickAlbum(MyLib, 'Which album would you like to select?');
                             myAl := MyLib[MyAlChoice];
                             WriteLn('The album you have selected to play is: ');
                             PrintAlbum(myAl);
-                        end;
-                    WriteLn('Your library is empty.');
+                        end
+                    else
+                        WriteLn('Your library is empty.');
                 end;                                           
             4 : begin 
                     assignFile(MyLibFile, 'myLibraryFile.txt');
                     Reset(MyLibFile);
                     //Seek('myLibraryFile.txt',0);
-                    while not eof(MyLibFile) do
+                    if (eof(MyLibFile) = false) then
                         begin
                             Close(MyLibFile);
                             MyAlChoice := PickAlbum(MyLib, 'Which album would you like to update?');
@@ -336,8 +339,9 @@ begin
                             WriteLn('Please enter the new details for this album: ');
                             myLib[MyAlChoice] := UpdateAlbum(MyLib);
                             change := 1;
-                       end;
-                    WriteLn('Your library is empty.');
+                       end
+                    else;
+                        WriteLn('Your library is empty.');
                 end;
             5 : begin 
                     WriteLn('Are you sure you want to exit?');

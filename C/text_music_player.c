@@ -48,36 +48,38 @@ int read_genre(char* prompt) {
     return Gen;
 }
 
-int read_album(struct album myAlbum) {
+int read_album(struct album *myAlbum) {
     int i = 0;
     int length;
-    myAlbum.album_name = read_string("What is the name of your album? ");
-    myAlbum.album_genre = read_genre("What genre is your album?");
-    myAlbum.tracks = read_integer_range("How many tracks are in your album?",1,15);
-    length = myAlbum.tracks;
+    
+    myAlbum->album_name = read_string("What is the name of your album? ");
+    myAlbum->album_genre = read_genre("What genre is your album?");
+    myAlbum->tracks = read_integer_range("How many tracks are in your album?",1,15);
+    length = myAlbum->tracks;
     for (i=0;i<length;i++) {
         printf("For track number %d", i+1);
-        myAlbum.track_names[i] = read_string("\nWhat is the name of this track? ");
-        myAlbum.track_paths[i] = read_string("What is the filepath of track? ");
+        myAlbum->track_names[i] = read_string("\nWhat is the name of this track? ");
+        myAlbum->track_paths[i] = read_string("What is the filepath of track? ");
     }
 }
 
-int print_album(album toPrint){
+int print_album(struct album *toPrint){
     int i;
     int choice;
-    int length = toPrint.tracks;
+    int length = toPrint->tracks;
     printf("The following songs are available to play: \n");
     for (i=0;i<length;i++)
-    printf("Track %d.", (i+1)," %s\n", toPrint.track_names[i]);
+    printf("Track %d.", (i+1));
+    printf(" %s\n", toPrint->track_names[i].str);
     choice = read_integer_range("Which song would you like to play?", 1, length);
     return choice;
 }
 
-int print_song_details(struct album toPrint, int choice){
+int print_song_details(struct album *toPrint, int choice){
     printf("Your selection details: \n");
-    printf("The track you selected: %s\n", toPrint.track_names[choice]);
-    printf("From the album %s\n", toPrint.album_name);
-    printf("is now playing... from the file location: %s\n", toPrint.track_paths[choice]);
+    printf("The track you selected: %s\n", toPrint->track_names[choice].str);
+    printf("From the album %s\n", toPrint->album_name.str);
+    printf("is now playing... from the file location: %s\n", toPrint->track_paths[choice].str);
     return 0;
 }
 
@@ -85,9 +87,9 @@ int main(){
     struct album myAlbum;
     int TrackSelect;
 
-    read_album(myAlbum);
-    TrackSelect = print_album(myAlbum);
-    print_song_details(myAlbum, TrackSelect);
+    read_album(&myAlbum);
+    TrackSelect = print_album(&myAlbum);
+    print_song_details(&myAlbum, TrackSelect);
 }
    
 
