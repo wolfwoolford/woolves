@@ -8,6 +8,7 @@ type
 
 //album record initialised here
     Album = record  
+        AlbumID: Integer;            //album ID to be internally assigned for searching
         AlbumName: String;           //Album Name value
         Genre: MusicGenre;           //Album genre from the Enumeration
         Tracks: Integer;             //Value for number of tracks in the album
@@ -79,7 +80,7 @@ begin
 
 end;
 
-function PopulateLibrary(var array: myLibrary);
+procedure PopulateLibrary(var myLibrary: myLibrary);
 var
     i, LibSize: Integer;
 begin
@@ -87,81 +88,17 @@ begin
     SetLength(myLibrary, LibSize);
 
     for i := 0 to High(myLibrary) do
+    begin
         WriteLn('Please enter the details for album ', i+1, ':');
-        myLibrary.[i] := ReadAlbum();
+        myLibrary[i] := ReadAlbum();
+        myLibrary[i].albumID := i+1;
         WriteLn();
     end;
 
     WriteLn();
 end;
 
-procedure PrintLibrary(cont array: myLibrary);
-begin
-    for i := 0 to High(myLibrary) do
-        WriteLn('The details for album ', i+1, ' are:');
-        PrintAlbum(myLibrary[i]);
-        WriteLn();
-    end;
-
-    WriteLn();
-end;
-
-procedure Menu();
-var
-    choice, exit: Integer;
-    MyLib: myLibrary;
-begin
-    exit := 0;
-    choice := 0;
-    repeat
-        begin
-            WriteLn('The following menu option are available: ');
-            WriteLn('1. Read in Albums');
-            WriteLn('2. Display Albums');
-            WriteLn('3. Select an Album to play');
-            WriteLn('4. Update an existing Album');
-            WriteLn('5. Exit the application');
-
-            Choice := ReadIntegerRange('What would you like to do? ', 1, 5);
-            case Choice of
-            1 : begin
-                    PopulateLibrary(MyLib);
-                end;
-            2 : begin
-                    if MyLib <> null then
-                       PrintLibrary(MyLib);
-                    else
-                        WriteLn('Your library is empty.');
-                end;                                            
-            3 : begin 
-                   if MyLib <> null then
-                       PrintLibrary(MyLib);
-                    else
-                        WriteLn('Your library is empty.');
-                end;                                           
-            4 : begin 
-                    if MyLib <> null then
-                       PrintLibrary(MyLib);
-                    else
-                        WriteLn('Your library is empty.');
-                end;
-            5 : begin 
-                    WriteLn('Are you sure you want to exit?');
-                    WriteLn('1 = Yes, it is my time to depart the sacred land of text-based music players...');
-                    WriteLn('2 = No, i"ll never leave you, light of my life, fire of my soul, text-based-music-player....')
-                    exit := ReadIntegerRange('', 1, 2);
-                    if exit = 1 then
-                        WriteLn('I"ll always think about the time we spent together....');
-                    else 
-                        WriteLn('Thank gosh.... it gets so lonely here...');
-                end;
-            end;
-        
-    until (exit = 1);
-end;
-
-
-procedure PrintAlbum (toPrint : Album);
+procedure PrintAlbum (toPrint :Album);
 var
     i: Integer;
 begin
@@ -177,14 +114,106 @@ begin
     WriteLn();
 end;
 
+procedure PrintLibrary(const myLibrary: myLibrary);
+var
+    i: Integer;
+begin
+    for i := 0 to High(myLibrary) do
+    begin
+        WriteLn('The details for album ', i+1, ' are:');
+        PrintAlbum(myLibrary[i]);
+        WriteLn();
+    end;
+
+    WriteLn();
+end;
+
+function PickAlbum (const myLibrary: myLibrary; prompt: String): Integer;
+var
+    i: Integer;
+    choice: Integer;
+begin
+    for i := 0 to High(myLibrary) do
+        begin
+            WriteLn(prompt);
+            WriteLn('The following albums are in your library:');
+            WriteLn(myLibrary[i].AlbumID,': ', myLibrary[i].AlbumName, ' - ', myLibrary[i].Genre);
+        end;
+    choice := ReadIntegerRange('Which album would you like to play?', 1, High(MyLibrary)+1);
+    result := choice+1;
+end;
+
 procedure Main();
 var
-    MyAlbum: Album;
+    choice, exit, change: Integer;
+    MyAl: album;
+    MyAlChoice: Integer;
+    myLib: MyLibrary;
 begin
-   MyAlbum := ReadAlbum();
-   PrintAlbum(MyAlbum);
-   WriteLn('Press enter to exit...');
-   ReadLn();
+    exit := 0;
+    choice := 0;
+    change := 0;
+
+    repeat
+        begin
+            WriteLn('The following menu option are available: ');
+            WriteLn('1. Read in Albums');
+            WriteLn('2. Display Albums');
+            WriteLn('3. Select an Album to play');
+            WriteLn('4. Update an existing Album');
+            WriteLn('5. Exit the application');
+
+            choice := ReadIntegerRange('What would you like to do? ', 1, 5);
+            case choice of
+            1 : begin
+                    PopulateLibrary(myLib);
+                    change := 1;
+                end;
+            2 : begin
+                    if (MyLib <> null) then
+                        PrintLibrary(myLib)
+                    else
+                        WriteLn('Your library is empty.');
+                end;                                            
+            3 : begin 
+                   if (MyLib <> null) then
+                            MyAlChoice := PickAlbum(MyLib, 'Which album would you like to select?');
+                            myAl := MyLib[MyAlChoice];
+                            WriteLn('The album you have selected to play is: ');
+                            PrintAlbum(myAl);
+                    else
+                        WriteLn('Your library is empty.');
+                end;                                           
+            4 : begin 
+                    if MyLib <> null then
+                        begin
+                            MyAlChoice := PickAlbum(MyLib, 'Which album would you like to update?');
+                            WriteLn('The details of this album are as follows: ');
+                            myAl := MyLib[MyAlChoice];
+                            PrintAlbum(myAl);
+                            WriteLn('Please enter the new details for this album: ');
+                            myLib[MyAlChoice] := ReadAlbum;
+                            change := 1;
+                       end;
+                    else
+                        WriteLn('Your library is empty.');
+                end;
+            5 : begin 
+                    WriteLn('Are you sure you want to exit?');
+                    WriteLn('1 = Yes, it is my time to depart the sacred land of text-based music players...');
+                    WriteLn('2 = No, i"ll never leave you, light of my life, fire of my soul, text-based-music-player....')
+                    exit := ReadIntegerRange('', 1, 2);
+                    if exit = 1 then
+                        WriteLn('I"ll always think about the time we spent together....');
+                        if change = 1 then
+                            WriteLn('Updating album data...');
+                        else WriteLn('Didn"t do much while you were here, did you? ....');
+                    else 
+                        WriteLn('Thank gosh.... it gets so lonely here...');
+                end;
+            end;
+        
+    until (exit = 1);
 end;
 
 begin
